@@ -1,0 +1,80 @@
+<div class="container text-center">
+  <div class="row">
+    <div class="col">
+      <h1>Karaoke The Car's</h1>
+      <img
+        src="/assets/imgs/banner1.jpg"
+        class="img-thumbnail rounded banner-image border border-0"
+        alt="Karaoke The Cars"
+      />
+      <!--
+      <img
+        src="/assets/imgs/banner3.jpg"
+        class="img-thumbnail rounded banner-image border border-0"
+        alt="Karaoke The Cars"
+      />
+      -->
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <div
+        *ngIf="isLoading"
+        style="width: 3rem; height: 3rem"
+        class="spinner-border text-primary mt-5"
+        role="status"
+      >
+        <span class="visually-hidden">Loading...</span>
+      </div>
+
+      <p-treeTable
+        *ngIf="valid"
+        #tt
+        paginatorLocale="es-ES"
+        [loading]="isLoading"
+        [columns]="cols"
+        [value]="tableData"
+        [scrollable]="true"
+        [paginator]="true"
+        [rows]="5"
+        [rowsPerPageOptions]="[5, 10, 25]"
+        [filterMode]="filterMode"
+      >
+        <ng-template pTemplate="caption">
+          <input
+            type="text"
+            pInputText
+            (input)="tt.filterGlobal($any($event.target)?.value, 'contains')"
+            placeholder="Buscar"
+          />
+        </ng-template>
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th *ngFor="let col of columns" [ttSortableColumn]="col.field">
+              {{ col.header }}
+              <p-treeTableSortIcon [field]="col.field" />
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template
+          pTemplate="body"
+          let-rowNode
+          let-rowData="rowData"
+          let-columns="columns"
+        >
+          <tr [ttRow]="rowNode">
+            <td>
+              <p-treeTableToggler [rowNode]="rowNode" />
+              {{ rowData.name }}
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td [attr.colspan]="cols.length">La canción que buscas aún no la tenemos😱, comentamélo y la agregamos a la lista 😎</td>
+          </tr>
+        </ng-template>
+      </p-treeTable>
+    </div>
+  </div>
+</div>
